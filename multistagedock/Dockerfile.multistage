@@ -1,4 +1,4 @@
-FROM python:3.10-alpine3.15
+FROM --platform=$BUILDPLATFORM python:3.9-alpine3.15
 
 RUN pip install --upgrade pip
 
@@ -13,4 +13,6 @@ RUN pip install --user -r requirements.txt
 
 COPY --chown=tharuni:tharuni . .
 
-CMD ["python", "-m", "flask", "run", "--host=0.0.0.0"]
+ENTRYPOINT ["python"]
+
+CMD ["app.py"]

@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: todo-app
+  template:
+    metadata:
+      labels:
+        app: todo-app
+    spec:
+      containers:
+        - name: todo-dcont
+          env:
+            - name: FLASK_ENV
+              value: development
+            - name: MONGO_HOST
+              value: mongo
+            - name: MONGO_PORT
+              value: "27017"
+            - name: PORT
+              value: "5000"
+          image: tharunika21/myfinalimage:latest
+          ports:
+            - containerPort: 5000

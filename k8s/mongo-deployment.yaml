@@ -1,41 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
-    kompose.cmd: kompose convert -o k8s/
-    kompose.version: 1.26.0 (40646f47)
-  creationTimestamp: null
-  labels:
-    io.kompose.service: mongo
   name: mongo
 spec:
   replicas: 1
   selector:
     matchLabels:
-      io.kompose.service: mongo
-  strategy:
-    type: Recreate
+      app: mongo  
   template:
     metadata:
-      annotations:
-        kompose.cmd: kompose convert -o k8s/
-        kompose.version: 1.26.0 (40646f47)
-      creationTimestamp: null
       labels:
-        io.kompose.service: mongo
+        app: mongo  
     spec:
       containers:
-        - image: mvertes/alpine-mongo:latest
-          name: mongo
+        - image: mongo:latest
+          name: mongo-cont
           ports:
             - containerPort: 27017
-          resources: {}
           volumeMounts:
             - mountPath: /data/db/
-              name: flaskapp
-      restartPolicy: Always
+              name: todovol
       volumes:
-        - name: flaskapp
+        - name: todovol
           persistentVolumeClaim:
-            claimName: flaskapp
-status: {}
+            claimName: todo-pvc
